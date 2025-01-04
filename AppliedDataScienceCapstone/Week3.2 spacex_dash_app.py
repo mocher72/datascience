@@ -1,8 +1,10 @@
 # Import required libraries
 import pandas as pd
 import dash
-import dash_html_components as html
-import dash_core_components as dcc
+import dash.html as html
+#import dash_html_components as html
+import dash.dcc as dcc
+#import dash_core_components as dcc
 from dash.dependencies import Input, Output
 import plotly.express as px
 
@@ -66,14 +68,15 @@ def get_pie_chart(entered_site):
     if entered_site == 'All Sites':
         fig = px.pie(filtered_df, values='class', 
             names='Launch Site', 
-            title='Total Sucess Launches by Site')
+            title='Total Success Launches by Site')
+        fig.update_traces(textinfo='value')
         return fig
 
     else:
         # return the outcomes piechart for a selected site               
         filtered_df = spacex_df[spacex_df['Launch Site'] == entered_site].groupby(['Launch Site', 'class']). \
         size().reset_index(name='class count')
-        title = f"Total Success Launches for site {entered_site}"
+        title = f"Total Launches for site {entered_site}"
         fig = px.pie(filtered_df,values='class count', names='class', title=title)
         return fig
 
